@@ -26,18 +26,23 @@ type
 
 const unknownTag* = low(ExtendedTagId)
 
-proc ident_name(node: NimNode): string {.compileTime, inline.} =
+proc ident_name_inner(node: NimNode): string {.compileTime, inline.} =
     case node.kind:
     of nnkAccQuoted:
         return $node[0]
     of nnkIdent:
         return $node
     of nnkPostfix:
-        return ident_name(node[1])
+        return ident_name_inner(node[1])
     of nnkStrLit:
         return node.strVal
     else:
         quit "Invalid token (expected identifier): " & $node.kind
+
+proc ident_name(node: NimNode): string {.compileTime, inline.} =
+    result = ident_name_inner(node)
+    if result == "formmethod":
+      result = "method"
 
 proc build_hash_set(name: string, content: NimNode): NimNode {.compileTime.} =
     result = newNimNode(nnkExprColonExpr)

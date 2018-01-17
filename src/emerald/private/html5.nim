@@ -152,7 +152,7 @@ tag_list:
         permitted_content  = flow_content
         forbidden_tags     = form
         optional_attrs     = (accept_charset, action, autocomplete, enctype,
-                              `method`, name, novalidate, target)
+                              formmethod, name, novalidate, target)
     head:
         permitted_content  = metadata_content
     hr:
